@@ -31,11 +31,11 @@ mongoose
   });
 
 // Include existing routes
-require("./app/routes/mahasiswa.routes")(app);
 require("./app/routes/coach.route")(app);
 require("./app/routes/homeTeam.route")(app);
 require("./app/routes/awayTeam.route")(app);
 require("./app/routes/team.route")(app);
+require("./app/routes/teamList.route")(app);
 require("./app/routes/score.route")(app);
 require("./app/routes/playerHome.route")(app);
 require("./app/routes/playerAway.route")(app);
@@ -44,8 +44,12 @@ require("./app/routes/formation.route")(app);
 const pictureRoutes = require("./app/routes/picture.route");
 app.use("/pictures", pictureRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Scoreboard API");
+});
+
 const IP_ADDRESS = process.env.IP || "localhost";
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT;
 server.listen(PORT, IP_ADDRESS, () => {
-  console.log(`Server running on http://${IP_ADDRESS}:${PORT}`);
+  console.log(`Server running on http://127.0.0.1:${PORT}`);
 });

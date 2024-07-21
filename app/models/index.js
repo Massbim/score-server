@@ -6,10 +6,10 @@ const TimerState = require("./timerState.model")(mongoose);
 module.exports = {
   mongoose,
   url: dbConfig.url,
-  mahasiswa: require("./mahasiswa.model")(mongoose),
   homeTeam: require("./homeTeam.model")(mongoose),
   awayTeam: require("./awayTeam.model")(mongoose),
   team: require("./team.model")(mongoose),
+  teamList: require("./teamList.model")(mongoose),
   score: require("./score.model")(mongoose),
   playerHome: require("./playerHome.model")(mongoose),
   playerAway: require("./playerAway.model")(mongoose),

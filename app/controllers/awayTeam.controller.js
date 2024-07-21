@@ -19,18 +19,20 @@ exports.show = (req, res) => {
     .catch((err) => res.status(500).send({ message: err.message }));
 };
 
+
 exports.update = (req, res) => {
   const id = req.params.id;
 
   AwayTeam.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then((data) => {
       if (!data) {
-        res.status(404).send({ message: "tidak dapat mengupdate data" });
+        return res.status(404).send({ message: "tidak dapat mengupdate data" });
       }
       res.send({ message: "Data berhasil di update" });
     })
     .catch((err) => res.status(500).send({ message: err.message }));
 };
+
 
 exports.delete = (req, res) => {
   const id = req.params.id;
