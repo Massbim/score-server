@@ -26,8 +26,8 @@ mongoose
   .connect(`${process.env.DATABASE_URL}express`, mongooseConfig)
   .then(() => console.log("Database connected"))
   .catch((err) => {
-    console.log(`Failed to connect to the database: ${err.message}`);
-    process.exit();
+    console.error(`Failed to connect to the database: ${err.message}`);
+    process.exit(1); // Use a non-zero exit code to indicate an error
   });
 
 // Include existing routes
@@ -50,6 +50,11 @@ app.get("/", (req, res) => {
 
 const IP_ADDRESS = process.env.IP || "localhost";
 const PORT = process.env.PORT;
-server.listen(PORT, IP_ADDRESS, () => {
-  console.log(`Server running on http://127.0.0.1:${PORT}`);
-});
+server
+  .listen(PORT, IP_ADDRESS, () => {
+    console.log(`Server running on http://127.0.0.1:${PORT}`);
+  })
+  .on("error", (err) => {
+    console.error(`Failed to start server: ${err.message}`);
+    process.exit(1); // Use a non-zero exit code to indicate an error
+  });
