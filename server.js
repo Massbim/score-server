@@ -48,7 +48,7 @@ app.get("/", (req, res) => {
   res.send("Scoreboard API");
 });
 
-const IP_ADDRESS = process.env.IP || "localhost";
+// const IP_ADDRESS = process.env.IP || "localhost";
 const PORT = process.env.PORT;
 server
   .listen(PORT, IP_ADDRESS, () => {
