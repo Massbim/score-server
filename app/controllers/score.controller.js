@@ -21,9 +21,15 @@ exports.show = (req, res) => {
 
 exports.update = (req, res) => {
   const id = req.params.id;
-  const { messagesHome, messagesAway, minutesHome, minutesAway } = req.body;
-  const homeValue = messagesHome ? messagesHome.length : 0;
-  const awayValue = messagesAway ? messagesAway.length : 0;
+  const {
+    messagesHome = [],
+    messagesAway = [],
+    minutesHome,
+    minutesAway,
+  } = req.body;
+
+  const homeValue = Array.isArray(messagesHome) ? messagesHome.length : 0;
+  const awayValue = Array.isArray(messagesAway) ? messagesAway.length : 0;
 
   Score.findByIdAndUpdate(
     id,
@@ -35,15 +41,22 @@ exports.update = (req, res) => {
       minutesAway,
       minutesHome,
     },
-    { useFindAndModify: false }
+    { new: true } // Ensures updated document is returned
   )
     .then((data) => {
       if (!data) {
-        res.status(404).send({ message: "Tidak dapat mengupdate data" });
+        return res.status(404).send({ message: "Tidak dapat mengupdate data" });
       }
-      res.send({ message: "Data berhasil di update", data });
+      res.send({ message: "Data berhasil diperbarui", data });
     })
-    .catch((err) => res.status(500).send({ message: err.message }));
+    .catch((err) =>
+      res
+        .status(500)
+        .send({
+          message: "Terjadi kesalahan saat memperbarui data",
+          error: err.message,
+        })
+    );
 };
 
 exports.delete = (req, res) => {

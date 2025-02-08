@@ -22,14 +22,23 @@ exports.show = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Coach.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  Coach.findByIdAndUpdate(id, req.body, { new: true })
     .then((data) => {
       if (!data) {
-        res.status(404).send({ message: "tidak dapat mengupdate data" });
+        return res
+          .status(404)
+          .send({ message: "Data tidak ditemukan atau gagal diupdate" });
       }
-      res.send({ message: "Data berhasil di update" });
+      res.send({ message: "Data berhasil diperbarui", data });
     })
-    .catch((err) => res.status(500).send({ message: err.message }));
+    .catch((err) =>
+      res
+        .status(500)
+        .send({
+          message: "Terjadi kesalahan saat memperbarui data",
+          error: err.message,
+        })
+    );
 };
 
 exports.delete = (req, res) => {
